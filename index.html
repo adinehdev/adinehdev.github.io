@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="View regression learning materials by Adineh Yazdani in English and German."
+    />
+    <title>Adineh Yazdani | Regression Resources</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f3ee;
+        --panel: #ffffff;
+        --ink: #17202a;
+        --muted: #627083;
+        --line: #d8ddd6;
+        --accent: #096b72;
+        --accent-strong: #064f55;
+        --soft: #e8f4f1;
+        --shadow: 0 18px 50px rgba(20, 30, 40, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(135deg, rgba(9, 107, 114, 0.1), transparent 38%),
+          linear-gradient(315deg, rgba(126, 81, 46, 0.08), transparent 42%),
+          var(--bg);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 42px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .mark {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border-radius: 8px;
+        color: #fff;
+        background: var(--accent);
+        font-weight: 800;
+        letter-spacing: 0;
+        box-shadow: 0 10px 24px rgba(9, 107, 114, 0.25);
+      }
+
+      .brand-text {
+        min-width: 0;
+      }
+
+      .brand-name {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 800;
+      }
+
+      .brand-subtitle {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .language-switch {
+        display: inline-flex;
+        padding: 4px;
+        gap: 4px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.7);
+        flex: 0 0 auto;
+      }
+
+      .language-switch button {
+        min-width: 48px;
+        min-height: 36px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-weight: 750;
+        cursor: pointer;
+      }
+
+      .language-switch button[aria-pressed="true"] {
+        color: #fff;
+        background: var(--accent);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+        align-items: center;
+        gap: 36px;
+        margin-bottom: 36px;
+      }
+
+      .hero-copy {
+        min-width: 0;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        margin: 0 0 14px;
+        color: var(--accent-strong);
+        font-size: 0.82rem;
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      h1 {
+        max-width: 780px;
+        margin: 0;
+        font-size: clamp(2.6rem, 8vw, 6.3rem);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 680px;
+        margin: 22px 0 0;
+        color: #354253;
+        font-size: clamp(1.05rem, 2vw, 1.3rem);
+        line-height: 1.65;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 0 18px;
+        border: 1px solid var(--accent);
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 800;
+      }
+
+      .button.primary {
+        color: #fff;
+        background: var(--accent);
+      }
+
+      .button.secondary {
+        color: var(--accent-strong);
+        background: rgba(255, 255, 255, 0.64);
+      }
+
+      .visual {
+        position: relative;
+        min-height: 370px;
+        border-radius: 8px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 28% 28%, rgba(255, 255, 255, 0.9), transparent 24%),
+          linear-gradient(145deg, #096b72, #17202a 62%, #734f36);
+        box-shadow: var(--shadow);
+      }
+
+      .chart {
+        position: absolute;
+        inset: 44px 34px 68px;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        align-items: end;
+        gap: 12px;
+      }
+
+      .bar {
+        border-radius: 6px 6px 0 0;
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .bar:nth-child(1) {
+        height: 28%;
+      }
+
+      .bar:nth-child(2) {
+        height: 43%;
+      }
+
+      .bar:nth-child(3) {
+        height: 38%;
+      }
+
+      .bar:nth-child(4) {
+        height: 62%;
+      }
+
+      .bar:nth-child(5) {
+        height: 72%;
+      }
+
+      .bar:nth-child(6) {
+        height: 84%;
+      }
+
+      .bar:nth-child(7) {
+        height: 96%;
+        background: #f5c26b;
+      }
+
+      .trend {
+        position: absolute;
+        inset: auto 32px 80px;
+        height: 5px;
+        border-radius: 999px;
+        transform: rotate(-18deg);
+        transform-origin: left center;
+        background: #f5c26b;
+      }
+
+      .visual-label {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 22px;
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 0.88rem;
+        font-weight: 750;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin: 46px 0 18px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        letter-spacing: 0;
+      }
+
+      .section-note {
+        max-width: 420px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .downloads {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .file-card {
+        display: flex;
+        min-height: 210px;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 10px 24px rgba(20, 30, 40, 0.07);
+      }
+
+      .file-type {
+        width: fit-content;
+        padding: 7px 10px;
+        border-radius: 6px;
+        color: var(--accent-strong);
+        background: var(--soft);
+        font-size: 0.75rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .file-card h3 {
+        margin: 12px 0 8px;
+        font-size: 1.05rem;
+        letter-spacing: 0;
+      }
+
+      .file-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+        font-size: 0.94rem;
+      }
+
+      .download-link {
+        display: inline-flex;
+        width: 100%;
+        min-height: 42px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
+        border-radius: 8px;
+        color: #fff;
+        background: var(--ink);
+        text-decoration: none;
+        font-weight: 850;
+        line-height: 1.2;
+        text-align: center;
+      }
+
+      footer {
+        margin-top: 48px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      [data-lang="de"] {
+        display: none;
+      }
+
+      body.lang-de [data-lang="en"] {
+        display: none;
+      }
+
+      body.lang-de [data-lang="de"] {
+        display: block;
+      }
+
+      body.lang-de .button[data-lang="de"],
+      body.lang-de .download-link[data-lang="de"] {
+        display: inline-flex;
+      }
+
+      body.lang-de footer [data-lang="de"] {
+        display: inline;
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .visual {
+          min-height: 300px;
+        }
+
+        .downloads {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 620px) {
+        .page {
+          width: min(100% - 22px, 1120px);
+          padding-top: 18px;
+        }
+
+        .topbar,
+        .section-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .language-switch {
+          width: 100%;
+        }
+
+        .language-switch button {
+          flex: 1 1 0;
+        }
+
+        .actions,
+        .button {
+          width: 100%;
+        }
+
+        .downloads {
+          grid-template-columns: 1fr;
+        }
+
+        .file-card {
+          min-height: 180px;
+        }
+
+        .visual-label {
+          flex-direction: column;
+          gap: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar" aria-label="Page header">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">AY</div>
+          <div class="brand-text">
+            <p class="brand-name">Adineh Yazdani</p>
+            <p class="brand-subtitle" data-lang="en">Learning resources</p>
+            <p class="brand-subtitle" data-lang="de">Lernmaterialien</p>
+          </div>
+        </div>
+
+        <div class="language-switch" aria-label="Language switcher">
+          <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-set-lang="de" aria-pressed="false">DE</button>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow" data-lang="en">Welcome</p>
+          <p class="eyebrow" data-lang="de">Willkommen</p>
+
+          <h1 id="hero-title" data-lang="en">Welcome</h1>
+          <h1 data-lang="de">Willkommen</h1>
+
+          <div class="actions">
+            <a class="button primary" href="#downloads" data-lang="en">Browse materials</a>
+            <a class="button primary" href="#downloads" data-lang="de">Materialien öffnen</a>
+            <a class="button secondary" href="Regression.pdf" data-lang="en">
+              View main PDF
+            </a>
+            <a class="button secondary" href="Regression.pdf" data-lang="de">
+              Haupt-PDF ansehen
+            </a>
+          </div>
+        </div>
+
+        <div class="visual" aria-hidden="true">
+          <div class="chart">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+          <span class="trend"></span>
+          <div class="visual-label">
+            <span data-lang="en">Model fit</span>
+            <span data-lang="de">Modellanpassung</span>
+            <span>R² · β · ŷ</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="downloads" aria-labelledby="downloads-title">
+        <div class="section-head">
+          <h2 id="downloads-title" data-lang="en">Materials</h2>
+          <h2 data-lang="de">Materialien</h2>
+          <p class="section-note" data-lang="en">
+            Choose a page to read online or open the matching PDF.
+          </p>
+          <p class="section-note" data-lang="de">
+            Wählen Sie eine Seite zum Online-Lesen oder öffnen Sie das passende
+            PDF.
+          </p>
+        </div>
+
+        <div class="downloads">
+          <article class="file-card">
+            <div>
+              <span class="file-type">HTML</span>
+              <h3>Regression.html</h3>
+              <p data-lang="en">View the main regression page directly in your browser.</p>
+              <p data-lang="de">Sehen Sie die Hauptseite zur Regression direkt im Browser an.</p>
+            </div>
+            <a class="download-link" href="Regression.html" data-lang="en">Open lesson</a>
+            <a class="download-link" href="Regression.html" data-lang="de">Lektion öffnen</a>
+          </article>
+
+          <article class="file-card">
+            <div>
+              <span class="file-type">PDF</span>
+              <h3>Regression.pdf</h3>
+              <p data-lang="en">View the main regression document as a PDF.</p>
+              <p data-lang="de">Sehen Sie das Hauptdokument zur Regression als PDF an.</p>
+            </div>
+            <a class="download-link" href="Regression.pdf" data-lang="en">Open PDF</a>
+            <a class="download-link" href="Regression.pdf" data-lang="de">PDF öffnen</a>
+          </article>
+
+          <article class="file-card">
+            <div>
+              <span class="file-type">HTML</span>
+              <h3>regression-handout.html</h3>
+              <p data-lang="en">View the regression handout as an HTML page.</p>
+              <p data-lang="de">Sehen Sie das Regression-Handout als HTML-Seite an.</p>
+            </div>
+            <a class="download-link" href="regression-handout.html" data-lang="en">Open handout</a>
+            <a class="download-link" href="regression-handout.html" data-lang="de">Handout öffnen</a>
+          </article>
+
+          <article class="file-card">
+            <div>
+              <span class="file-type">PDF</span>
+              <h3>regression-handout.pdf</h3>
+              <p data-lang="en">View the compact handout in PDF format.</p>
+              <p data-lang="de">Sehen Sie das kompakte Handout im PDF-Format an.</p>
+            </div>
+            <a class="download-link" href="regression-handout.pdf" data-lang="en">Open handout PDF</a>
+            <a class="download-link" href="regression-handout.pdf" data-lang="de">Handout-PDF öffnen</a>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <span data-lang="en">© 2026 Adineh Yazdani. Built for GitHub Pages.</span>
+        <span data-lang="de">© 2026 Adineh Yazdani. Erstellt für GitHub Pages.</span>
+      </footer>
+    </main>
+
+    <script>
+      const buttons = document.querySelectorAll("[data-set-lang]");
+
+      function setLanguage(language) {
+        document.body.classList.toggle("lang-de", language === "de");
+        document.documentElement.lang = language;
+        buttons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.setLang === language));
+        });
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.setLang));
+      });
+    </script>
+  </body>
+</html>
