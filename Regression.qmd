@@ -1,0 +1,294 @@
+---
+title: "Conducting Multiple Linear Regression in R"
+author: "Adineh Yazdani"
+
+format:
+  html:
+    toc: true
+    number-sections: true
+  pdf:
+    pdf-engine: xelatex
+    toc: true
+    number-sections: true
+
+bibliography: references.bib
+csl: apa.csl
+
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+::: center
+**Hochschule Fresenius**
+
+**Course:** Data Analysis for Decision-Making
+
+**Professor:** Prof. Dr. Stephan Huber
+
+**Date:** May 26, 2026
+:::
+
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## Scope of Presentation
+
+This presentation covers:
+
+- How to **load and inspect** data in R
+- How to **specify and run** a multiple linear regression model using `lm()`
+- How to **extract and interpret** results from `summary()`
+- How to run basic **model diagnostics**
+
+::: callout-note
+Theory of regression is assumed as background knowledge.
+:::
+
+------------------------------------------------------------------------
+
+## Workflow Overview
+
+```{r}
+#| echo: false
+#| eval: true
+```
+
+::::::: columns
+::: {.column width="25%"}
+**1. Data Input**\
+Load & inspect
+:::
+
+::: {.column width="25%"}
+**2. Model Specification**\
+Define formula
+:::
+
+::: {.column width="25%"}
+**3. Model Estimation**\
+Fit with `lm()`
+:::
+
+::: {.column width="25%"}
+**4. Output Extraction**\
+`summary()` & plots
+:::
+:::::::
+
+> *Each step builds on the previous one — a clear, repeatable workflow.*
+
+------------------------------------------------------------------------
+
+## Data Input in R
+
+Create a data frame directly in R:
+
+```{r}
+data <- data.frame(
+  Salary     = c(2000, 2500, 3000, 3500, 4000),
+  Age        = c(22, 25, 30, 35, 40),
+  Education  = c(12, 14, 16, 16, 18),
+  Experience = c(1, 3, 5, 7, 10)
+)
+```
+
+::: callout-tip
+In practice, import data from CSV with `read.csv("file.csv")` or from Excel with `readxl::read_excel("file.xlsx")`.
+:::
+
+------------------------------------------------------------------------
+
+## Data Inspection
+
+Use these built-in functions before modeling:
+
+```{r}
+head(data)      # shows the first 6 rows; confirms data loaded correctly
+
+summary(data)   # gives min, max, mean, and quartiles for each variable
+
+str(data)       # checks variable types (numeric, factor, etc.)
+
+is.na(data)     # check for missing values
+```
+
+::: fragment
+**Example:** `summary(data)` reveals average salary is 3000, education ranges 12–18 years, experience 1–10 years — useful context before modeling.
+:::
+
+------------------------------------------------------------------------
+
+## Model Specification
+
+**Formula:** `Salary ~ Age + Education + Experience`
+
+| Symbol | Meaning |
+|----|----|
+| `~` | Separates outcome from predictors |
+| Left side | Dependent variable **(y)**: `Salary` |
+| Right side | Independent variables **(x)**: `Age`, `Education`, `Experience` |
+
+```{r}
+# The formula interface in R
+Salary ~ Age + Education + Experience
+```
+
+------------------------------------------------------------------------
+
+## Model Estimation
+
+Fit the model using **Ordinary Least Squares (OLS)**:
+
+```{r}
+model <- lm(Salary ~ Age + Education + Experience, data = data)
+```
+
+The `lm()` call returns a **model object** containing:
+
+- Estimated coefficients
+- Residuals and fitted values
+- Diagnostic information
+
+```{r}
+fitted(model)      # predicted values
+residuals(model)   # observed minus predicted
+summary(model)     # full results table
+```
+
+------------------------------------------------------------------------
+
+## Extracting Results
+
+```{r}
+summary(model)
+```
+
+| Component | Interpretation |
+|----|----|
+| **Estimate** | Expected change in Y per one-unit increase in X, holding others constant |
+| **Std. Error** | Precision of the coefficient estimate |
+| **t value** | Estimate ÷ Std. Error; larger = stronger evidence |
+| **Pr(\>\|t\|)** | p-value; p \< 0.05 → statistically significant |
+| **R-squared** | Proportion of variance in Y explained by the model |
+| **Adjusted R²** | R² penalized for number of predictors |
+| **F-statistic** | Tests if at least one predictor has a non-zero coefficient |
+
+------------------------------------------------------------------------
+
+## Basic Diagnostics
+
+```{r}
+par(mfrow = c(2, 2))  # display 4 plots in a 2x2 grid
+plot(model)
+```
+
+What `plot(model)` shows:
+
+- **Residuals vs Fitted** — checks linearity
+- **Normal Q-Q** — checks if residuals are normally distributed
+- **Scale-Location** — checks constant variance (homoscedasticity)
+- **Cook's Distance** — detects influential outliers
+
+------------------------------------------------------------------------
+
+## Implementation Example
+
+Predict salary for a **new employee**:
+
+```{r}
+new_employee <- data.frame(
+  Age        = 33,
+  Education  = 16,
+  Experience = 6
+)
+
+# Point estimate
+predict(model, newdata = new_employee)
+
+# With 95% prediction interval
+predict(model, newdata = new_employee,
+        interval = "prediction", level = 0.95)
+```
+
+::: callout-note
+The prediction interval gives both a point estimate and a plausible range — useful for decision-making.
+:::
+
+------------------------------------------------------------------------
+
+## Class Exercise {background-color="#f0f4f8"}
+
+**Run a regression model in R using `lm()` and interpret the output.**
+
+Use your own variables and the following structure:
+
+```{r, eval=FALSE}
+# 1. Create your dataset (at least 8 observations, 2+ predictors)
+my_data <- data.frame(
+  y  = c(...),   # your outcome variable
+  x1 = c(...),   # first predictor
+  x2 = c(...)    # second predictor
+)
+
+# 2. Fit the model
+my_model <- lm(y ~ x1 + x2, data = my_data)
+
+# 3. Inspect results
+summary(my_model)
+
+# 4. Diagnostics
+par(mfrow = c(2, 2)); plot(my_model)
+
+# 5. Predict a new observation
+predict(my_model, newdata = data.frame(x1 = ..., x2 = ...))
+```
+
+**Questions to answer:** Which predictors are significant? What does adjusted R² tell you? Interpret one coefficient in plain language.
+
+------------------------------------------------------------------------
+
+## Key Takeaway {.center background-color="#1a3a5c"}
+
+<br>
+
+Multiple linear regression in R follows a **clear, repeatable workflow:**
+
+<br>
+
+**Load data → Inspect → Specify model with `lm()`**\
+**→ Extract results with `summary()` → Check diagnostics with `plot()`**
+
+<br>
+
+Mastering this sequence allows you to efficiently analyze relationships between variables and interpret **coefficients**, **p-values**, and **R-squared** in your own research.
+
+------------------------------------------------------------------------
+
+## References
+
+- R Core Team. (2024). *R: A language and environment for statistical computing.* R Foundation for Statistical Computing. <https://www.R-project.org/>
+
+- James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). *An introduction to statistical learning* (2nd ed.). Springer. <https://doi.org/10.1007/978-1-0716-1418-1>
+
+- Wooldridge, J. M. (2019). *Introductory econometrics: A modern approach* (7th ed.). Cengage Learning.
+
+::: {.callout-note appearance="minimal"}
+APA 7th edition citation style.
+:::
+
+------------------------------------------------------------------------
+
+## Thank You {.center background-color="#1a3a5c"}
+
+<br>
+
+**Adineh Yazdani**\
+yazdani_khomeirani.adineh\@stud.hs-fresenius.de\
+Matriculation No.: 401121836
+
+<br>
+
+*Questions welcome!*
