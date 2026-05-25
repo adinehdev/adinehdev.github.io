@@ -1,0 +1,198 @@
+[
+  {
+    "objectID": "Regression.html",
+    "href": "Regression.html",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "",
+    "text": "Hochschule Fresenius\nCourse: Data Analysis for Decision-Making\nProfessor: Prof. Dr. Stephan Huber\nDate: May 26, 2026"
+  },
+  {
+    "objectID": "Regression.html#scope-of-presentation",
+    "href": "Regression.html#scope-of-presentation",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "1 Scope of Presentation",
+    "text": "1 Scope of Presentation\nThis presentation covers:\n\nHow to load and inspect data in R\nHow to specify and run a multiple linear regression model using lm()\nHow to extract and interpret results from summary()\nHow to run basic model diagnostics\n\n\n\n\n\n\n\nNote\n\n\n\nTheory of regression is assumed as background knowledge."
+  },
+  {
+    "objectID": "Regression.html#workflow-overview",
+    "href": "Regression.html#workflow-overview",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "2 Workflow Overview",
+    "text": "2 Workflow Overview\n\n\n1. Data Input\nLoad & inspect\n\n2. Model Specification\nDefine formula\n\n3. Model Estimation\nFit with lm()\n\n4. Output Extraction\nsummary() & plots\n\n\n\nEach step builds on the previous one — a clear, repeatable workflow."
+  },
+  {
+    "objectID": "Regression.html#data-input-in-r",
+    "href": "Regression.html#data-input-in-r",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "3 Data Input in R",
+    "text": "3 Data Input in R\nCreate a data frame directly in R:\n\ndata &lt;- data.frame(\n  Salary     = c(2000, 2500, 3000, 3500, 4000),\n  Age        = c(22, 25, 30, 35, 40),\n  Education  = c(12, 14, 16, 16, 18),\n  Experience = c(1, 3, 5, 7, 10)\n)\n\n\n\n\n\n\n\nTip\n\n\n\nIn practice, import data from CSV with read.csv(\"file.csv\") or from Excel with readxl::read_excel(\"file.xlsx\")."
+  },
+  {
+    "objectID": "Regression.html#data-inspection",
+    "href": "Regression.html#data-inspection",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "4 Data Inspection",
+    "text": "4 Data Inspection\nUse these built-in functions before modeling:\n\nhead(data)      # shows the first 6 rows; confirms data loaded correctly\n\n  Salary Age Education Experience\n1   2000  22        12          1\n2   2500  25        14          3\n3   3000  30        16          5\n4   3500  35        16          7\n5   4000  40        18         10\n\nsummary(data)   # gives min, max, mean, and quartiles for each variable\n\n     Salary          Age         Education      Experience  \n Min.   :2000   Min.   :22.0   Min.   :12.0   Min.   : 1.0  \n 1st Qu.:2500   1st Qu.:25.0   1st Qu.:14.0   1st Qu.: 3.0  \n Median :3000   Median :30.0   Median :16.0   Median : 5.0  \n Mean   :3000   Mean   :30.4   Mean   :15.2   Mean   : 5.2  \n 3rd Qu.:3500   3rd Qu.:35.0   3rd Qu.:16.0   3rd Qu.: 7.0  \n Max.   :4000   Max.   :40.0   Max.   :18.0   Max.   :10.0  \n\nstr(data)       # checks variable types (numeric, factor, etc.)\n\n'data.frame':   5 obs. of  4 variables:\n $ Salary    : num  2000 2500 3000 3500 4000\n $ Age       : num  22 25 30 35 40\n $ Education : num  12 14 16 16 18\n $ Experience: num  1 3 5 7 10\n\nis.na(data)     # check for missing values\n\n     Salary   Age Education Experience\n[1,]  FALSE FALSE     FALSE      FALSE\n[2,]  FALSE FALSE     FALSE      FALSE\n[3,]  FALSE FALSE     FALSE      FALSE\n[4,]  FALSE FALSE     FALSE      FALSE\n[5,]  FALSE FALSE     FALSE      FALSE\n\n\n\nExample: summary(data) reveals average salary is 3000, education ranges 12–18 years, experience 1–10 years — useful context before modeling."
+  },
+  {
+    "objectID": "Regression.html#model-specification",
+    "href": "Regression.html#model-specification",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "5 Model Specification",
+    "text": "5 Model Specification\nFormula: Salary ~ Age + Education + Experience\n\n\n\n\n\n\n\nSymbol\nMeaning\n\n\n\n\n~\nSeparates outcome from predictors\n\n\nLeft side\nDependent variable (y): Salary\n\n\nRight side\nIndependent variables (x): Age, Education, Experience\n\n\n\n\n# The formula interface in R\nSalary ~ Age + Education + Experience\n\nSalary ~ Age + Education + Experience"
+  },
+  {
+    "objectID": "Regression.html#model-estimation",
+    "href": "Regression.html#model-estimation",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "6 Model Estimation",
+    "text": "6 Model Estimation\nFit the model using Ordinary Least Squares (OLS):\n\nmodel &lt;- lm(Salary ~ Age + Education + Experience, data = data)\n\nThe lm() call returns a model object containing:\n\nEstimated coefficients\nResiduals and fitted values\nDiagnostic information\n\n\nfitted(model)      # predicted values\n\n       1        2        3        4        5 \n2040.984 2450.820 3024.590 3450.820 4032.787 \n\nresiduals(model)   # observed minus predicted\n\n        1         2         3         4         5 \n-40.98361  49.18033 -24.59016  49.18033 -32.78689 \n\nsummary(model)     # full results table\n\n\nCall:\nlm(formula = Salary ~ Age + Education + Experience, data = data)\n\nResiduals:\n     1      2      3      4      5 \n-40.98  49.18 -24.59  49.18 -32.79 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept) -655.738   2029.578  -0.323    0.801\nAge           81.967     74.676   1.098    0.470\nEducation     73.770     82.783   0.891    0.537\nExperience     8.197    180.886   0.045    0.971\n\nResidual standard error: 90.54 on 1 degrees of freedom\nMultiple R-squared:  0.9967,    Adjusted R-squared:  0.9869 \nF-statistic: 101.3 on 3 and 1 DF,  p-value: 0.07287"
+  },
+  {
+    "objectID": "Regression.html#extracting-results",
+    "href": "Regression.html#extracting-results",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "7 Extracting Results",
+    "text": "7 Extracting Results\n\nsummary(model)\n\n\nCall:\nlm(formula = Salary ~ Age + Education + Experience, data = data)\n\nResiduals:\n     1      2      3      4      5 \n-40.98  49.18 -24.59  49.18 -32.79 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept) -655.738   2029.578  -0.323    0.801\nAge           81.967     74.676   1.098    0.470\nEducation     73.770     82.783   0.891    0.537\nExperience     8.197    180.886   0.045    0.971\n\nResidual standard error: 90.54 on 1 degrees of freedom\nMultiple R-squared:  0.9967,    Adjusted R-squared:  0.9869 \nF-statistic: 101.3 on 3 and 1 DF,  p-value: 0.07287\n\n\n\n\n\n\n\n\n\nComponent\nInterpretation\n\n\n\n\nEstimate\nExpected change in Y per one-unit increase in X, holding others constant\n\n\nStd. Error\nPrecision of the coefficient estimate\n\n\nt value\nEstimate ÷ Std. Error; larger = stronger evidence\n\n\nPr(&gt;|t|)\np-value; p &lt; 0.05 → statistically significant\n\n\nR-squared\nProportion of variance in Y explained by the model\n\n\nAdjusted R²\nR² penalized for number of predictors\n\n\nF-statistic\nTests if at least one predictor has a non-zero coefficient"
+  },
+  {
+    "objectID": "Regression.html#basic-diagnostics",
+    "href": "Regression.html#basic-diagnostics",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "8 Basic Diagnostics",
+    "text": "8 Basic Diagnostics\n\npar(mfrow = c(2, 2))  # display 4 plots in a 2x2 grid\nplot(model)\n\n\n\n\n\n\n\n\nWhat plot(model) shows:\n\nResiduals vs Fitted — checks linearity\nNormal Q-Q — checks if residuals are normally distributed\nScale-Location — checks constant variance (homoscedasticity)\nCook’s Distance — detects influential outliers"
+  },
+  {
+    "objectID": "Regression.html#implementation-example",
+    "href": "Regression.html#implementation-example",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "9 Implementation Example",
+    "text": "9 Implementation Example\nPredict salary for a new employee:\n\nnew_employee &lt;- data.frame(\n  Age        = 33,\n  Education  = 16,\n  Experience = 6\n)\n\n# Point estimate\npredict(model, newdata = new_employee)\n\n       1 \n3278.689 \n\n# With 95% prediction interval\npredict(model, newdata = new_employee,\n        interval = \"prediction\", level = 0.95)\n\n       fit      lwr      upr\n1 3278.689 1641.855 4915.522\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe prediction interval gives both a point estimate and a plausible range — useful for decision-making."
+  },
+  {
+    "objectID": "Regression.html#class-exercise",
+    "href": "Regression.html#class-exercise",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "10 Class Exercise",
+    "text": "10 Class Exercise\nRun a regression model in R using lm() and interpret the output.\nUse your own variables and the following structure:\n\n# 1. Create your dataset (at least 8 observations, 2+ predictors)\nmy_data &lt;- data.frame(\n  y  = c(...),   # your outcome variable\n  x1 = c(...),   # first predictor\n  x2 = c(...)    # second predictor\n)\n\n# 2. Fit the model\nmy_model &lt;- lm(y ~ x1 + x2, data = my_data)\n\n# 3. Inspect results\nsummary(my_model)\n\n# 4. Diagnostics\npar(mfrow = c(2, 2)); plot(my_model)\n\n# 5. Predict a new observation\npredict(my_model, newdata = data.frame(x1 = ..., x2 = ...))\n\nQuestions to answer: Which predictors are significant? What does adjusted R² tell you? Interpret one coefficient in plain language."
+  },
+  {
+    "objectID": "Regression.html#key-takeaway",
+    "href": "Regression.html#key-takeaway",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "11 Key Takeaway",
+    "text": "11 Key Takeaway\n\nMultiple linear regression in R follows a clear, repeatable workflow:\n\nLoad data → Inspect → Specify model with lm()\n→ Extract results with summary() → Check diagnostics with plot()\n\nMastering this sequence allows you to efficiently analyze relationships between variables and interpret coefficients, p-values, and R-squared in your own research."
+  },
+  {
+    "objectID": "Regression.html#references",
+    "href": "Regression.html#references",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "12 References",
+    "text": "12 References\n\nR Core Team. (2024). R: A language and environment for statistical computing. R Foundation for Statistical Computing. https://www.R-project.org/\nJames, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). An introduction to statistical learning (2nd ed.). Springer. https://doi.org/10.1007/978-1-0716-1418-1\nWooldridge, J. M. (2019). Introductory econometrics: A modern approach (7th ed.). Cengage Learning.\n\n\n\n\n\n\n\nAPA 7th edition citation style."
+  },
+  {
+    "objectID": "Regression.html#thank-you",
+    "href": "Regression.html#thank-you",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "13 Thank You",
+    "text": "13 Thank You\n\nAdineh Yazdani\nyazdani_khomeirani.adineh@stud.hs-fresenius.de\nMatriculation No.: 401121836\n\nQuestions welcome!"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "",
+    "text": "You can access the handout for my presentation via the links below."
+  },
+  {
+    "objectID": "index.html#presentation-handout",
+    "href": "index.html#presentation-handout",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "",
+    "text": "You can access the handout for my presentation via the links below."
+  },
+  {
+    "objectID": "index.html#files",
+    "href": "index.html#files",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "Files",
+    "text": "Files\n\nOpen Handout PDF\nOpen Handout HTML\nOpen Presentation\nOpen Presentation PDF"
+  },
+  {
+    "objectID": "regression-handout.html#creating-or-loading-data",
+    "href": "regression-handout.html#creating-or-loading-data",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "2.1 Creating or Loading Data",
+    "text": "2.1 Creating or Loading Data\nFor demonstration purposes, a small dataset can be created directly in R using data.frame(). In applied research, data is often imported from external files, for example with read.csv() for CSV files or readxl::read_excel() for Excel files.\n\ndata &lt;- data.frame(\n  Salary     = c(2000, 2500, 3000, 3500, 4000),\n  Age        = c(22, 25, 30, 35, 40),\n  Education  = c(12, 14, 16, 16, 18),\n  Experience = c(1, 3, 5, 7, 10)\n)\n\ndata\n\n  Salary Age Education Experience\n1   2000  22        12          1\n2   2500  25        14          3\n3   3000  30        16          5\n4   3500  35        16          7\n5   4000  40        18         10\n\n\nFor example, a researcher studying income determinants could collect survey data containing salary, years of schooling, age, and work experience from employees. In practice, such a dataset could be imported like this:\n\nsalary_data &lt;- read.csv(\"salary_data.csv\")"
+  },
+  {
+    "objectID": "regression-handout.html#inspecting-the-data",
+    "href": "regression-handout.html#inspecting-the-data",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "2.2 Inspecting the Data",
+    "text": "2.2 Inspecting the Data\nAfter loading the data, several R functions can be used to inspect the dataset before estimating the model.\n\nhead(data)\n\n  Salary Age Education Experience\n1   2000  22        12          1\n2   2500  25        14          3\n3   3000  30        16          5\n4   3500  35        16          7\n5   4000  40        18         10\n\nsummary(data)\n\n     Salary          Age         Education      Experience  \n Min.   :2000   Min.   :22.0   Min.   :12.0   Min.   : 1.0  \n 1st Qu.:2500   1st Qu.:25.0   1st Qu.:14.0   1st Qu.: 3.0  \n Median :3000   Median :30.0   Median :16.0   Median : 5.0  \n Mean   :3000   Mean   :30.4   Mean   :15.2   Mean   : 5.2  \n 3rd Qu.:3500   3rd Qu.:35.0   3rd Qu.:16.0   3rd Qu.: 7.0  \n Max.   :4000   Max.   :40.0   Max.   :18.0   Max.   :10.0  \n\nstr(data)\n\n'data.frame':   5 obs. of  4 variables:\n $ Salary    : num  2000 2500 3000 3500 4000\n $ Age       : num  22 25 30 35 40\n $ Education : num  12 14 16 16 18\n $ Experience: num  1 3 5 7 10\n\nis.na(data)\n\n     Salary   Age Education Experience\n[1,]  FALSE FALSE     FALSE      FALSE\n[2,]  FALSE FALSE     FALSE      FALSE\n[3,]  FALSE FALSE     FALSE      FALSE\n[4,]  FALSE FALSE     FALSE      FALSE\n[5,]  FALSE FALSE     FALSE      FALSE\n\n\nThe function head() shows the first rows of the data, summary() provides descriptive statistics, str() displays the variable types, and is.na() checks for missing values. In the salary example, the dataset contains five observations with salary as the outcome variable and age, education, and experience as predictors."
+  },
+  {
+    "objectID": "regression-handout.html#task",
+    "href": "regression-handout.html#task",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "7.1 Task",
+    "text": "7.1 Task\nCreate a data frame with at least eight observations and at least two predictor variables. For example, you could model house price using size and number of rooms, or student GPA using study hours and attendance rate.\nThen complete the following steps:\n\nFit a multiple linear regression model.\nUse summary() to examine the output.\nIdentify which predictors are statistically significant at the 5% level.\nReport the adjusted R-squared and explain what it says about model fit.\nInterpret at least one coefficient in plain language.\nRun diagnostic plots and describe what they suggest about the regression assumptions.\nUse predict() to estimate the outcome for a new observation."
+  },
+  {
+    "objectID": "regression-handout.html#starter-template",
+    "href": "regression-handout.html#starter-template",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "7.2 Starter Template",
+    "text": "7.2 Starter Template\n\nmy_data &lt;- data.frame(\n  y  = c(...),  # outcome variable\n  x1 = c(...),  # first predictor\n  x2 = c(...)   # second predictor\n)\n\nhead(my_data)\nsummary(my_data)\n\nmy_model &lt;- lm(y ~ x1 + x2, data = my_data)\n\nsummary(my_model)\n\npar(mfrow = c(2, 2))\nplot(my_model)\n\nnew_obs &lt;- data.frame(\n  x1 = ...,\n  x2 = ...\n)\n\npredict(my_model, newdata = new_obs)"
+  },
+  {
+    "objectID": "regression-handout.html#scenario",
+    "href": "regression-handout.html#scenario",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "8.1 Scenario",
+    "text": "8.1 Scenario\nA company collects data on five employees and wants to model monthly salary in euros as a function of age, years of education, and years of work experience."
+  },
+  {
+    "objectID": "regression-handout.html#step-1-load-or-create-data",
+    "href": "regression-handout.html#step-1-load-or-create-data",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "8.2 Step 1: Load or Create Data",
+    "text": "8.2 Step 1: Load or Create Data\n\ndata &lt;- data.frame(\n  Salary     = c(2000, 2500, 3000, 3500, 4000),\n  Age        = c(22, 25, 30, 35, 40),\n  Education  = c(12, 14, 16, 16, 18),\n  Experience = c(1, 3, 5, 7, 10)\n)"
+  },
+  {
+    "objectID": "regression-handout.html#step-2-inspect-the-data",
+    "href": "regression-handout.html#step-2-inspect-the-data",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "8.3 Step 2: Inspect the Data",
+    "text": "8.3 Step 2: Inspect the Data\n\nhead(data)\nsummary(data)\nstr(data)"
+  },
+  {
+    "objectID": "regression-handout.html#step-3-specify-and-estimate-the-model",
+    "href": "regression-handout.html#step-3-specify-and-estimate-the-model",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "8.4 Step 3: Specify and Estimate the Model",
+    "text": "8.4 Step 3: Specify and Estimate the Model\n\nmodel &lt;- lm(Salary ~ Age + Education + Experience, data = data)"
+  },
+  {
+    "objectID": "regression-handout.html#step-4-extract-results",
+    "href": "regression-handout.html#step-4-extract-results",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "8.5 Step 4: Extract Results",
+    "text": "8.5 Step 4: Extract Results\n\nsummary(model)\n\nThe key output includes the coefficients, p values, R-squared, adjusted R-squared, and F-statistic."
+  },
+  {
+    "objectID": "regression-handout.html#step-5-run-diagnostics",
+    "href": "regression-handout.html#step-5-run-diagnostics",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "8.6 Step 5: Run Diagnostics",
+    "text": "8.6 Step 5: Run Diagnostics\n\npar(mfrow = c(2, 2))\nplot(model)\n\nThe diagnostic plots help assess linearity, normality, homoscedasticity, and influential observations."
+  },
+  {
+    "objectID": "regression-handout.html#step-6-predict-for-a-new-employee",
+    "href": "regression-handout.html#step-6-predict-for-a-new-employee",
+    "title": "Conducting Multiple Linear Regression in R",
+    "section": "8.7 Step 6: Predict for a New Employee",
+    "text": "8.7 Step 6: Predict for a New Employee\n\nnew_employee &lt;- data.frame(\n  Age        = 33,\n  Education  = 16,\n  Experience = 6\n)\n\npredict(model, newdata = new_employee)\n\npredict(\n  model,\n  newdata = new_employee,\n  interval = \"prediction\",\n  level = 0.95\n)\n\nThis six-step workflow — loading, inspecting, specifying, estimating, diagnosing, and predicting — constitutes the core practical competency in applied regression analysis using R."
+  }
+]
